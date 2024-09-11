@@ -36,7 +36,6 @@ function lsb_upload_page() {
 function lsb_file_html() {
   ?>
     <input type="file" name="lsb_file" />
-    <?php echo get_option("lsb_file"); ?>
   <?php
 }
 
@@ -44,7 +43,7 @@ function lsb_upload_page_html() {
   ?>
   <div class="wrap">
     <h1>Lehrstellenbörse</h1>
-    <form action="options.php" method="post">
+    <form action="options.php" enctype="multipart/form-data" method="post">
       <?php
         settings_fields("lsb");
 
@@ -58,7 +57,11 @@ function lsb_upload_page_html() {
 }
 
 function lsb_handle_file_upload($option) {
-  header("-Custom-Foobar: " . implode(",", $_FILES));
+  if (!empty($_FILES["lsb_file"]["tmp_name"])) {
+    $csv = array_map("str_getcsv", file($_FILES["lsb_file"]["tmp_name"]));
+    return $csv;
+  }
+  return $option;
 }
 
 ?>
