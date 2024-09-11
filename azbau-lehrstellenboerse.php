@@ -35,7 +35,7 @@ function lsb_upload_page() {
 
 function lsb_file_html() {
   ?>
-    <input type="file" name="lsb_file" />
+    <input type="file" accept=".csv" name="lsb_file" />
   <?php
 }
 
