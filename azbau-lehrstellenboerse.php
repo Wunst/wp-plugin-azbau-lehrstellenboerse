@@ -9,7 +9,12 @@
  * Requires PHP: 8.2
  */
 
+define( "LSB_PLUGDIR", plugin_dir_path(__FILE__) );
+define( "LSB_PLUGURL", plugin_dir_url(__FILE__) );
+
 require_once __DIR__ . '/vendor/autoload.php';
+
+require(LSB_PLUGDIR . "/includes/display.php");
 
 add_action("admin_menu", "lsb_upload_page");
 
@@ -101,6 +106,4 @@ function lsb_handle_file_upload($option) {
   }
   return $option;
 }
-
-?>
 
