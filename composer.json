@@ -1,0 +1,14 @@
+{
+    "name": "wunst/wp-plugin-azbau-lehrstellenboerse",
+    "type": "project",
+    "require": {
+        "parsecsv/php-parsecsv": "^1.3"
+    },
+    "license": "All Rights Reserved",
+    "authors": [
+        {
+            "name": "Wunst",
+            "email": "matthiesbe@gmail.com"
+        }
+    ]
+}
