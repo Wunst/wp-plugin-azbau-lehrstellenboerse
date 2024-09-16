@@ -99,11 +99,12 @@ function lsb_handle_file_upload($option) {
         "invalid_csv_schema",
         "Ungültige CSV. Sind Sie sicher, dass Sie die richtige Datenbankdatei hochgeladen haben?"
       );
-      return $option;
+      return get_option("lsb_file");
     }
     
     return $csv->data;
   }
-  return $option;
+
+  return get_option("lsb_file");
 }
 
