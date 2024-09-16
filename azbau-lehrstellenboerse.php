@@ -9,6 +9,8 @@
  * Requires PHP: 8.2
  */
 
+require_once __DIR__ . '/vendor/autoload.php';
+
 add_action("admin_menu", "lsb_upload_page");
 
 function lsb_upload_page() {
@@ -47,6 +49,7 @@ function lsb_upload_page_html() {
       <?php
         settings_fields("lsb");
 
+        settings_errors("lsb_file");
         do_settings_sections("lsb");
 
         submit_button();
@@ -58,8 +61,43 @@ function lsb_upload_page_html() {
 
 function lsb_handle_file_upload($option) {
   if (!empty($_FILES["lsb_file"]["tmp_name"])) {
-    $csv = array_map("str_getcsv", file($_FILES["lsb_file"]["tmp_name"]));
-    return $csv;
+    $csv = new \ParseCsv\Csv();
+    $csv->delimiter = ";";
+    $csv->parseFile($_FILES["lsb_file"]["tmp_name"]);
+
+    # Reject CSV if schema does not match.
+    if (array_diff(array(
+      "Name 1", 
+      "Vorname", 
+      "Name 2",
+      "Telefon",
+      "Handy",
+      "Maurer",
+      "Zimmerer",
+      "Fliesenleger",
+      "Betonbauer",
+      "Straßenbauer",
+      "Kanalbauer",
+      "HBF Maurerarbeiten",
+      "ABF Zimmerarbeiten",
+      "ABF Fliesenarbeiten",
+      "HBF Betonarbeiten",
+      "TBF Straßenbauarbeiten",
+      "TBF Kanalbauarbeiten",
+      "TBF Brunnenbauarbeiten",
+      "Brunnenbauer",
+      "Wärme-, Kälte-, Schallschutzisolierer",
+      "ABF Wärme, Kälte-Schallschutz-Arbeiten"
+    ), $csv->titles)) {
+      add_settings_error(     
+        "lsb_file",
+        "invalid_csv_schema",
+        "Ungültige CSV. Sind Sie sicher, dass Sie die richtige Datenbankdatei hochgeladen haben?"
+      );
+      return $option;
+    }
+    
+    return $csv->data;
   }
   return $option;
 }
