@@ -1,9 +1,6 @@
 <div <?php echo get_block_wrapper_attributes(); ?>>
-<div class="wp-block-stack">
-<form action="?filter=true">
 <?php
 
-# Spalten, die Ausbildungsplätze enthalten.
 $countCols = array( 
   "Maurer",
   "Zimmerer",
@@ -22,90 +19,136 @@ $countCols = array(
   "Wärme-, Kälte-, Schallschutzisolierer",
   "ABF Wärme, Kälte-Schallschutz-Arbeiten"
 );
-?>
-  <input type="submit" value="Filtern"/>
-</form>
-<div class="wp-block-group">
-<table>
-  <tr>
-    <th>Ausbildungsplätze</th>
-    <th>Ort</th>
-    <th>Betrieb/Ansprechpartner</th>
-    <th>Kontakt</th>
-  </tr>
-<?php
-# Ausbildungsberufe filtern.
-$countCols = array_filter($countCols, function($job) {
-  return !array_key_exists("filter", $_GET) ||
-    array_key_exists($job, $_GET) && $_GET[$job] == "on";
+
+lsb_render_filter_form($countCols);
+
+$filteredCols = array_filter($countCols, function($job) {
+  $job = str_replace(" ", "_", $job);
+  return array_key_exists($job, $_GET) && $_GET[$job] == "on";
 });
 
-$data = get_option("lsb_file");
+# Only filter if at least one box checked.
+$countCols = $filteredCols ? $filteredCols : $countCols;
 
-foreach ($data as $row) {
-  # Nur Zeilen mit mind. 1 Ausbildungsplatz darstellen.
-  $render = false;
+# Only show rows with at least 1 open position.
+$data = array_filter(get_option("lsb_file"), function($row) use($countCols) {
   foreach ($countCols as $col) {
-    $cnt = intval($row[$col]);
-    if ($cnt != 0) {
-      $render = true;
-      break;
+    if (intval($row[$col]) != 0) {
+      return true;
     }
   }
-  if (!$render) continue;
+  return false;
+});
 
+lsb_render_table($countCols, $data);
+
+# Displays the filter form.
+function lsb_render_filter_form($countCols) {
 ?>
-  <tr>
-    <td><?php
+  <form>
+    <div class="azbau-lehrstellenboerse-lsb-filter-checks">
+  <?php foreach ($countCols as $job) { ?>
+      <div class="check">
+        <input type="checkbox" id="<?php echo $job; ?>" name="<?php echo $job ?>"/>
+        <label for="<?php echo $job ?>"><?php echo $job ?></label>
+      </div>
+  <?php } ?>
+    </div>
+    <input class="wp-block-button wp-element-button" type="submit" value="Filtern"/>
+    <a class="wp-block-button wp-element-button" href="?">
+      Filter löschen
+    </a>
+  </form>
+<?php
+}
 
-  # Ausbildungsplätze.
+# Displays the table with final prepared data.
+function lsb_render_table($countCols, $data) {
+?>
+  <table class="azbau-lehrstellenboerse-lsb-table">
+    <tr>
+      <th>Ausbildungsplätze</th>
+      <th>Ort</th>
+      <th>Betrieb/Ansprechpartner</th>
+      <th>Kontakt</th>
+    </tr>
+  <?php foreach ($data as $row) { ?>
+    <tr>
+      <td class="azbau-lehrstellenboerse-lsb-td-positions">
+        <?php lsb_render_positions($countCols, $row); ?>
+      </td>
+      <td class="azbau-lehrstellenboerse-lsb-td-place">
+        <?php echo esc_html(intval($row["PLZ"])); ?> <?php echo esc_html($row["Ort"]); ?>
+      </td>
+      <td class="azbau-lehrstellenboerse-lsb-td-company">
+        <?php lsb_render_company($row); ?>
+      </td>
+      <td class="azbau-lehrstellenboerse-lsb-td-contact">
+        <?php lsb_render_contact($row); ?>
+      </td>
+  <?php } ?>
+  </table>
+<?php
+}
+
+# Displays open positions in company.
+function lsb_render_positions($countCols, $row) {
   foreach ($countCols as $col) {
     $cnt = intval($row[$col]);
     if ($cnt != 0) {
       echo $cnt . "x " . $col . "<br/>";
     }
   }
-  echo "</td><td>";
-
-  # Ort.
-  $plz = intval($row["PLZ"]);
-  echo $plz . " " . esc_html($row["Ort"]);
-  echo "</td><td>";
-
-  # Betrieb.
-  $url = $row["Internet"];
-  if ($url) {
-    echo '<a href="' . esc_url($url) . '">';
-  }
-  echo esc_html($row["Name 1"]) . "<br/>" . 
-    esc_html($row["Vorname"]) . "<br/>" . 
-    esc_html($row["Name 2"]);
-  if ($url) {
-    echo "</a>";
-  }
-  echo "</td><td>";
-
-  # Kontakt.
-  $tel = $row["Telefon"];
-  if ($tel) {
-    echo 'Tel. <a href="tel:' . $tel . '">' . $tel . "</a><br/>";
-  }
-
-  $mobile = $row["Handy"];
-  if ($mobile) {
-    echo 'Handy <a href="tel:' . $mobile . '">' . $mobile . "</a><br/>";
-  }
-
-  $mail = $row["E-Mail"];
-  if ($mail) {
-    echo 'Email <a href="mailto:' . $mail . '">' . $mail . "</a><br/>";
-  }
-
-    ?></td>
-  </tr>
-<?php
 }
+
+# Displays company name and contact.
+function lsb_render_company($row) {
+  $url = $row["Internet"];
+  if ($url) { 
 ?>
-</table>
+  <a href="<?php echo esc_url($url); ?>">
+<?php 
+  } 
+
+  # Weird old and inconsistent DB format. New entries are usually of the form
+  # ["Name 1"] = Company Name, ["Vorname"] = Contact's Full (!) Name, but
+  # ["Name 2"] is still used in some old entries.
+?>
+    <?php echo esc_html($row["Name 1"]); ?> <br/>
+    <?php echo esc_html($row["Vorname"]); ?> <br/>
+    <?php echo esc_html($row["Name 2"]); ?> <br/>
+<?php
+
+  if ($url) {
+?>
+  </a>
+<?php
+  }
+}
+
+# Displays various contact info.
+function lsb_render_contact($row) {
+  lsb_render_contact_bit("tel:", "📞", $row["Telefon"]);
+  lsb_render_contact_bit("tel:", "📱", $row["Handy"]);
+  lsb_render_contact_bit("mailto:", "📧", $row["E-Mail"]);
+}
+
+# Displays a contact link, if present.
+# @param linktype e. g. tel:, mailto:
+# @param prefix Prefix character or characters
+# @param contact Contact info itself
+function lsb_render_contact_bit($linktype, $prefix, $contact) {
+  if ($contact) {
+    # TODO: Need to escape link?
+?>
+  <a href="<?php echo $linktype; ?><?php echo $contact; ?>">
+    <?php echo esc_html($prefix); ?> <?php echo esc_html($contact); ?>
+  </a>
+  <br/>
+<?php
+  }
+}
+
+?>
 </div>
 
