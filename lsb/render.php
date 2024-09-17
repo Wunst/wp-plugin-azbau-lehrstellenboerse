@@ -1,11 +1,8 @@
-<table <?php echo get_block_wrapper_attributes(); ?>>
-  <tr>
-    <th>Ausbildungsplätze</th>
-    <th>Ort</th>
-    <th>Betrieb/Ansprechpartner</th>
-    <th>Kontakt</th>
-  </tr>
+<div <?php echo get_block_wrapper_attributes(); ?>>
+<div class="wp-block-stack">
+<form action="?filter=true">
 <?php
+
 # Spalten, die Ausbildungsplätze enthalten.
 $countCols = array( 
   "Maurer",
@@ -25,6 +22,23 @@ $countCols = array(
   "Wärme-, Kälte-, Schallschutzisolierer",
   "ABF Wärme, Kälte-Schallschutz-Arbeiten"
 );
+?>
+  <input type="submit" value="Filtern"/>
+</form>
+<div class="wp-block-group">
+<table>
+  <tr>
+    <th>Ausbildungsplätze</th>
+    <th>Ort</th>
+    <th>Betrieb/Ansprechpartner</th>
+    <th>Kontakt</th>
+  </tr>
+<?php
+# Ausbildungsberufe filtern.
+$countCols = array_filter($countCols, function($job) {
+  return !array_key_exists("filter", $_GET) ||
+    array_key_exists($job, $_GET) && $_GET[$job] == "on";
+});
 
 $data = get_option("lsb_file");
 
@@ -93,4 +107,5 @@ foreach ($data as $row) {
 }
 ?>
 </table>
+</div>
 

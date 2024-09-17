@@ -12,6 +12,7 @@
     "html": false,
     "color": {
       "background": true,
+      "link": true,
       "text": true
     },
     "typography": {
