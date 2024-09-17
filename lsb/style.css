@@ -1,0 +1,14 @@
+.wp-block-azbau-lehrstellenboerse-lsb {
+  border-collapse: collapse;
+}
+
+.wp-block-azbau-lehrstellenboerse-lsb th {
+  padding: 1em;
+  border: 1px solid;
+}
+
+.wp-block-azbau-lehrstellenboerse-lsb td {
+  padding: 1em;
+  border: 1px solid;
+}
+
