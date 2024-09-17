@@ -66,7 +66,7 @@ function lsb_render_filter_form($countCols) {
 function lsb_render_table($countCols, $data) {
 ?>
   <table class="azbau-lehrstellenboerse-lsb-table">
-    <tr>
+    <tr class="azbau-lehrstellenboerse-lsb-table-headers">
       <th>Ausbildungsplätze</th>
       <th>Ort</th>
       <th>Betrieb/Ansprechpartner</th>

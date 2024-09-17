@@ -1,6 +1,7 @@
 .azbau-lehrstellenboerse-lsb-filter-checks {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  margin-bottom: 1em;
 }
 
 .azbau-lehrstellenboerse-lsb-table {
@@ -8,13 +9,45 @@
   border-collapse: collapse;
 }
 
-.azbau-lehrstellenboerse-lsb-table th {
-  padding: 0.5em;
-  border: 1px solid;
+/* Not mobile first because styling tables to not be tables and then to be 
+ * tables again is an abomination before God. */
+@media only screen and (max-width: 767px) {
+  .azbau-lehrstellenboerse-lsb-table tr {
+    display: grid;
+    margin-top: 2em;
+    border: 1px solid;
+    padding: 0.5em;
+  }
+
+  .azbau-lehrstellenboerse-lsb-table td {
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+
+  .azbau-lehrstellenboerse-lsb-table .azbau-lehrstellenboerse-lsb-table-headers {
+    display: none;
+  }
+
+  .azbau-lehrstellenboerse-lsb-td-positions {
+    font-size: var(--wp--preset--font-size--large);
+    font-weight: 500;
+  }
+
+  .azbau-lehrstellenboerse-lsb-td-company {
+    font-size: var(--wp--preset--font-size--large);
+    font-weight: 500;
+  }
 }
 
-.azbau-lehrstellenboerse-lsb-table td {
-  padding: 0.5em;
-  border: 1px solid;
+@media only screen and (min-width: 768px) {
+  .azbau-lehrstellenboerse-lsb-table th {
+    padding: 0.5em;
+    border: 1px solid;
+  }
+
+  .azbau-lehrstellenboerse-lsb-table td {
+    padding: 0.5em;
+    border: 1px solid;
+  }
 }
 
