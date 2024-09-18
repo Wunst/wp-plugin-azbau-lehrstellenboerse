@@ -39,7 +39,7 @@ jobs:
       run: composer install --prefer-dist --no-progress
 
     - name: Create release asset
-      run: mkdir /tmp/azbau-lehrstellenboerse && cp -r * /tmp/azbau-lehrstellenboerse && zip /tmp/lsb-${{ steps.tag.outputs.tag }}.zip /tmp/azbau-lehrstellenboerse
+      run: mkdir /tmp/azbau-lehrstellenboerse && cp -r * /tmp/azbau-lehrstellenboerse && cd /tmp && zip -r lsb-${{ steps.tag.outputs.tag }}.zip azbau-lehrstellenboerse
 
     - name: Upload release asset
       uses: actions/upload-release-asset@v1
