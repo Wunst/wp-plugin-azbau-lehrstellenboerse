@@ -30,8 +30,11 @@ $filteredCols = array_filter($countCols, function($job) {
 # Only filter if at least one box checked.
 $countCols = $filteredCols ? $filteredCols : $countCols;
 
-# Only show rows with at least 1 open position.
+# Only show rows with at least 1 open position and company has consented to be shown.
 $data = array_filter(get_option("lsb_file"), function($row) use($countCols) {
+  if ($row["Ausbildungszentrum Bau"] != 1) {
+    return false;
+  }
   foreach ($countCols as $col) {
     if (intval($row[$col]) != 0) {
       return true;
