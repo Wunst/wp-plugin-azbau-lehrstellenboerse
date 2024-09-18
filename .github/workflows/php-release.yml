@@ -36,7 +36,7 @@ jobs:
       run: composer install --prefer-dist --no-progress
 
     - name: Create release asset
-      run: zip /tmp/lsb-${{ steps.tag.outputs.tag }}.zip *
+      run: bsdtar -c -a -f /tmp/lsb-${{ steps.tag.outputs.tag }}.zip -s ",^,azbau-lehrstellenboerse/," *
 
     - name: Upload release asset
       uses: actions/upload-release-asset@v1
