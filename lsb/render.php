@@ -1,26 +1,29 @@
 <div <?php echo get_block_wrapper_attributes(); ?>>
 <?php
 
-$countCols = array( 
-  "Maurer",
-  "Zimmerer",
-  "Fliesenleger",
-  "Betonbauer",
-  "Straßenbauer",
-  "Kanalbauer",
-  "HBF Maurerarbeiten",
-  "ABF Zimmerarbeiten",
-  "ABF Fliesenarbeiten",
-  "HBF Betonarbeiten",
-  "TBF Straßenbauarbeiten",
-  "TBF Kanalbauarbeiten",
-  "TBF Brunnenbauarbeiten",
-  "Brunnenbauer",
-  "Wärme-, Kälte-, Schallschutzisolierer",
-  "ABF Wärme, Kälte-Schallschutz-Arbeiten"
+# Dictionary for translating internal job names to gendered job names.
+$genderDict = array( 
+  "Maurer" => "Maurer*in",
+  "Zimmerer" => "Zimmerer*in",
+  "Fliesenleger" => "Fliesenleger*in",
+  "Betonbauer" => "Betonbauer*in",
+  "Straßenbauer" => "Straßenbauer*in",
+  "Kanalbauer" => "Kanalbauer*in",
+  "HBF Maurerarbeiten" => null,
+  "ABF Zimmerarbeiten" => null,
+  "ABF Fliesenarbeiten" => null,
+  "HBF Betonarbeiten" => null,
+  "TBF Straßenbauarbeiten" => null,
+  "TBF Kanalbauarbeiten" => null,
+  "TBF Brunnenbauarbeiten" => null,
+  "Brunnenbauer" => "Brunnenbauer*in",
+  "Wärme-, Kälte-, Schallschutzisolierer" => "Wärme-, Kälte-, Schallschutzisolierer*in",
+  "ABF Wärme, Kälte-Schallschutz-Arbeiten" => null
 );
 
-lsb_render_filter_form($countCols);
+$countCols = array_keys($genderDict);
+
+lsb_render_filter_form($countCols, $genderDict);
 
 $filteredCols = array_filter($countCols, function($job) {
   $job = str_replace(" ", "_", $job);
@@ -43,17 +46,22 @@ $data = array_filter(get_option("lsb_file"), function($row) use($countCols) {
   return false;
 });
 
-lsb_render_table($countCols, $data);
+lsb_render_table($countCols, $data, $genderDict);
+
+function lsb_gender_translate($genderDict, $job) {
+  $tl = $genderDict[$job];
+  return $tl ? $tl : $job;
+}
 
 # Displays the filter form.
-function lsb_render_filter_form($countCols) {
+function lsb_render_filter_form($countCols, $genderDict) {
 ?>
   <form>
     <div class="azbau-lehrstellenboerse-lsb-filter-checks">
   <?php foreach ($countCols as $job) { ?>
       <div class="check">
-        <input type="checkbox" id="<?php echo $job; ?>" name="<?php echo $job ?>"/>
-        <label for="<?php echo $job ?>"><?php echo $job ?></label>
+        <input type="checkbox" id="<?php echo $job; ?>" name="<?php echo $job; ?>"/>
+        <label for="<?php echo $job; ?>"><?php echo lsb_gender_translate($genderDict, $job); ?></label>
       </div>
   <?php } ?>
     </div>
@@ -66,7 +74,7 @@ function lsb_render_filter_form($countCols) {
 }
 
 # Displays the table with final prepared data.
-function lsb_render_table($countCols, $data) {
+function lsb_render_table($countCols, $data, $genderDict) {
 ?>
   <table class="azbau-lehrstellenboerse-lsb-table">
     <tr class="azbau-lehrstellenboerse-lsb-table-headers">
@@ -78,7 +86,7 @@ function lsb_render_table($countCols, $data) {
   <?php foreach ($data as $row) { ?>
     <tr>
       <td class="azbau-lehrstellenboerse-lsb-td-positions">
-        <?php lsb_render_positions($countCols, $row); ?>
+        <?php lsb_render_positions($countCols, $row, $genderDict); ?>
       </td>
       <td class="azbau-lehrstellenboerse-lsb-td-place">
         <?php echo esc_html(intval($row["PLZ"])); ?> <?php echo esc_html($row["Ort"]); ?>
@@ -95,11 +103,11 @@ function lsb_render_table($countCols, $data) {
 }
 
 # Displays open positions in company.
-function lsb_render_positions($countCols, $row) {
+function lsb_render_positions($countCols, $row, $genderDict) {
   foreach ($countCols as $col) {
     $cnt = intval($row[$col]);
     if ($cnt != 0) {
-      echo $cnt . "x " . $col . "<br/>";
+      echo $cnt . "x " . lsb_gender_translate($genderDict, $col) . "<br/>";
     }
   }
 }
