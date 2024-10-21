@@ -13,12 +13,12 @@ function lsb_upload_page() {
     "lsb"
   );
 
-  register_setting("lsb", "lsb_file", "lsb_handle_file_upload");
+  register_setting("lsb", "lsb_file");
 
   add_menu_page(
     "Lehrstellenbörse",
     "Lehrstellenbörse",
-    "edit_posts",
+    "publish_posts",
     "lehrstellenboerse",
     "lsb_upload_page_html"
   );
@@ -31,10 +31,14 @@ function lsb_file_html() {
 }
 
 function lsb_upload_page_html() {
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    lsb_handle_file_upload();
+  }
+
   ?>
   <div class="wrap">
     <h1>Lehrstellenbörse</h1>
-    <form action="options.php" enctype="multipart/form-data" method="post">
+    <form action="" enctype="multipart/form-data" method="post">
       <?php
         settings_fields("lsb");
 
@@ -48,7 +52,12 @@ function lsb_upload_page_html() {
   <?php
 }
 
-function lsb_handle_file_upload($option) {
+function lsb_handle_file_upload() {
+  if (!current_user_can("publish_posts")) {
+    status_header(403);
+    die;
+  }
+
   if (!empty($_FILES["lsb_file"]["tmp_name"])) {
     $csv = new \ParseCsv\Csv();
     $csv->delimiter = ";";
@@ -83,12 +92,10 @@ function lsb_handle_file_upload($option) {
         "invalid_csv_schema",
         "Ungültige CSV. Sind Sie sicher, dass Sie die richtige Datenbankdatei hochgeladen haben?"
       );
-      return get_option("lsb_file");
+      return;
     }
     
-    return $csv->data;
+    update_option("lsb_file", $csv->data);
   }
-
-  return get_option("lsb_file");
 }
 
