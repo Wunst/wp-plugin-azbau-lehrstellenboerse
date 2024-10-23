@@ -84,8 +84,6 @@ function lsb_handle_file_upload() {
       "TBF Kanalbauarbeiten",
       "TBF Brunnenbauarbeiten",
       "Brunnenbauer",
-      "Wärme-, Kälte-, Schallschutzisolierer",
-      "ABF Wärme, Kälte-Schallschutz-Arbeiten"
     ), $csv->titles)) {
       add_settings_error(     
         "lsb_file",

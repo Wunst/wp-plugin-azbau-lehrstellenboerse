@@ -3,22 +3,20 @@
 
 # Dictionary for translating internal job names to gendered job names.
 $genderDict = array( 
-  "Maurer" => "Maurer*in",
-  "Zimmerer" => "Zimmerer*in",
-  "Fliesenleger" => "Fliesenleger*in",
-  "Betonbauer" => "Betonbauer*in",
-  "Straßenbauer" => "Straßenbauer*in",
-  "Kanalbauer" => "Kanalbauer*in",
-  "HBF Maurerarbeiten" => null,
-  "ABF Zimmerarbeiten" => null,
   "ABF Fliesenarbeiten" => null,
-  "HBF Betonarbeiten" => null,
-  "TBF Straßenbauarbeiten" => null,
-  "TBF Kanalbauarbeiten" => null,
-  "TBF Brunnenbauarbeiten" => null,
+  "ABF Zimmerarbeiten" => null,
+  "Betonbauer" => "Betonbauer*in",
   "Brunnenbauer" => "Brunnenbauer*in",
-  "Wärme-, Kälte-, Schallschutzisolierer" => "Wärme-, Kälte-, Schallschutzisolierer*in",
-  "ABF Wärme, Kälte-Schallschutz-Arbeiten" => null
+  "Fliesenleger" => "Fliesenleger*in",
+  "HBF Betonarbeiten" => null,
+  "HBF Maurerarbeiten" => null,
+  "Kanalbauer" => "Kanalbauer*in",
+  "Maurer" => "Maurer*in",
+  "Straßenbauer" => "Straßenbauer*in",
+  "TBF Brunnenbauarbeiten" => null,
+  "TBF Kanalbauarbeiten" => null,
+  "TBF Straßenbauarbeiten" => null,
+  "Zimmerer" => "Zimmerer*in",
 );
 
 $countCols = array_keys($genderDict);
