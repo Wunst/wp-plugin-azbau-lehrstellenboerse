@@ -5,7 +5,7 @@
  * Plugin URI: https://github.com/Wunst/wp-plugin-azbau-lehrstellenboerse
  * Author: Ben Matthies
  * Author URI: https://github.com/Wunst
- * Version: 1.2.1
+ * Version: 1.3.0
  * Update URI: false
  * GitHub Plugin URI: Wunst/wp-plugin-azbau-lehrstellenboerse
  * Primary Branch: main
