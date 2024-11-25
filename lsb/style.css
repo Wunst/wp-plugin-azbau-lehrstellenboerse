@@ -1,3 +1,9 @@
+.azbau-lehrstellenboerse-lsb-filter-head {
+  font-weight: 900;
+  font-size: var(--wp--preset--font-size--large);
+  color: var(--wp-preset--color--accent);
+}
+
 .azbau-lehrstellenboerse-lsb-filter-checks {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));

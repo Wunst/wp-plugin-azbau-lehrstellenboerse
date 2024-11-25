@@ -84,6 +84,12 @@ function lsb_handle_file_upload() {
       "TBF Kanalbauarbeiten",
       "TBF Brunnenbauarbeiten",
       "Brunnenbauer",
+      "Praktikum Fliesenleger",
+      "Praktikum Maurer",
+      "Praktikum Zimmerer",
+      "Praktikum Straßenbauer",
+      "Praktikum Kanalbauer",
+      "Praktikum Stahl und Beton"
     ), $csv->titles)) {
       add_settings_error(     
         "lsb_file",
