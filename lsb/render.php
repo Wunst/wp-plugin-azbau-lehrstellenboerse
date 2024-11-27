@@ -128,7 +128,7 @@ function lsb_render_table(
 ?>
   <table class="azbau-lehrstellenboerse-lsb-table">
     <tr class="azbau-lehrstellenboerse-lsb-table-headers">
-      <th>Ausbildungsplätze</th>
+      <th>Angebote</th>
       <th>Ort</th>
       <th>Betrieb/Ansprechpartner</th>
       <th>Kontakt</th>
