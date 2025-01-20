@@ -82,8 +82,6 @@ function lsb_handle_file_upload() {
       "HBF Betonarbeiten",
       "TBF Straßenbauarbeiten",
       "TBF Kanalbauarbeiten",
-      "TBF Brunnenbauarbeiten",
-      "Brunnenbauer",
       "Praktikum Fliesenleger",
       "Praktikum Maurer",
       "Praktikum Zimmerer",
