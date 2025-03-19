@@ -92,10 +92,9 @@ function lsb_checkbox($id, $label) {
 # Displays the filter form.
 function lsb_render_filter_form($countCols, $genderDict) {
 ?>
-<details>
-  <summary class="azbau-lehrstellenboerse-lsb-filter-head">
+  <h2>
     Nach Beruf/Art filtern
-  </summary>
+  </h2>
   <form>
     <h3>Ich suche...</h3>
 <?php
@@ -115,7 +114,6 @@ function lsb_render_filter_form($countCols, $genderDict) {
       Filter löschen
     </a>
   </form>
-</details>
 <?php
 }
 
