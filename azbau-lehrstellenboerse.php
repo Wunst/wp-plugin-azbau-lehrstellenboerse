@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Plugin Name: Lehrstellenbörse
  * Plugin URI: https://github.com/Wunst/wp-plugin-azbau-lehrstellenboerse
@@ -21,4 +20,5 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 require_once(LSB_PLUGDIR . "/includes/admin.php");
 require_once(LSB_PLUGDIR . "/includes/display.php");
+require_once(LSB_PLUGDIR . "/includes/rest_api.php");
 
