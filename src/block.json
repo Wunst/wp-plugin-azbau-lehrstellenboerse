@@ -1,0 +1,16 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "azbau-lehrstellenboerse/lsb",
+  "version": "2.0.0",
+  "title": "Lehrstellenbörse",
+  "category": "widgets",
+  "icon": "database",
+  "description": "Zeigt die Lehrstellenbörse als Tabelle an",
+  "example": {},
+  "supports": {
+    "html": false
+  },
+  "editorScript": "file:./index.js",
+  "viewScript": "file:./view.js"
+}
