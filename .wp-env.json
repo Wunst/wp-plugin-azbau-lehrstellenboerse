@@ -1,5 +1,8 @@
 {
   "plugins": [
     "."
+  ],
+  "themes": [
+    "../wp-theme-azbau"
   ]
 }
