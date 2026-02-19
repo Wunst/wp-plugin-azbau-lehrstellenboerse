@@ -19,6 +19,9 @@
 		"@wordpress/scripts": "^30.21.0"
 	},
 	"dependencies": {
-		"@wordpress/element": "^6.9.0"
+		"@emotion/styled": "^11.14.1",
+		"@mui/material": "^7.3.8",
+		"@wordpress/element": "^6.9.0",
+		"list.js": "^2.3.1"
 	}
 }

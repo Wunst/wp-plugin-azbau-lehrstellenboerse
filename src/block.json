@@ -19,7 +19,9 @@
       "fontSize": true
     }
   },
+  "editorScript": "file:./index.js",
   "render": "file:./render.php",
-  "style": "file:./style.css"
+  "viewScript": "file:./view.js",
+  "style": "file:./style-index.css"
 }
 

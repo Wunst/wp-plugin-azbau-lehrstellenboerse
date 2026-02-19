@@ -64,31 +64,7 @@ function lsb_handle_file_upload() {
     $csv->parseFile($_FILES["lsb_file"]["tmp_name"]);
 
     # Reject CSV if schema does not match.
-    if (array_diff(array(
-      "Name 1", 
-      "Vorname", 
-      "Name 2",
-      "Telefon",
-      "Handy",
-      "Maurer",
-      "Zimmerer",
-      "Fliesenleger",
-      "Betonbauer",
-      "Straßenbauer",
-      "Kanalbauer",
-      "HBF Maurerarbeiten",
-      "ABF Zimmerarbeiten",
-      "ABF Fliesenarbeiten",
-      "HBF Betonarbeiten",
-      "TBF Straßenbauarbeiten",
-      "TBF Kanalbauarbeiten",
-      "Praktikum Fliesenleger",
-      "Praktikum Maurer",
-      "Praktikum Zimmerer",
-      "Praktikum Straßenbauer",
-      "Praktikum Kanalbauer",
-      "Praktikum Stahl und Beton"
-    ), $csv->titles)) {
+    if ( array_diff( LSB_ALL_COLUMNS , $csv->titles ) ) {
       add_settings_error(     
         "lsb_file",
         "invalid_csv_schema",
@@ -96,8 +72,18 @@ function lsb_handle_file_upload() {
       );
       return;
     }
-    
-    update_option("lsb_file", $csv->data);
+
+    $data = $csv->data;
+
+    // Sanitize job columns and PLZ, which for some reasons are stored as string representations of 
+    // floating point numbers...
+    foreach ( $data as $idx => $row ) {
+      $data[ $idx ][ "PLZ" ] = intval( $row[ "PLZ" ] );
+      foreach ( LSB_JOB_COLUMNS as $job_col ) {
+        $data[ $idx ][ $job_col ] = intval( $row[ $job_col ] );
+      }
+    }
+    update_option("lsb_file", $data);
   }
 }
 
