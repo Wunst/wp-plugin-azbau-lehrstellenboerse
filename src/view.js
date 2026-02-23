@@ -16,6 +16,7 @@ const jobTitles = [
   "Fliesenleger*in",
   "Stahl- und Betonbauer*in",
   "Kanalbauer*in",
+  "Straßenbauer*in",
   "HBF Maurerarbeiten",
   "ABF Zimmerarbeiten",
   "ABF Fliesenarbeiten",
